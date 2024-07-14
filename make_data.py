@@ -36,7 +36,7 @@ def word_segment(sent):
     return sent
 
 # File path to the corpus
-file_path = './Language-Model/wikipediacorpus/viwiki-20240201-pages-articles-multistream-index.txt'
+file_path = './Language-Model/wikipediacorpus/viwiki.txt'
 
 with open('./Language-Model/data/datatrain.txt', 'w', encoding='utf-8') as f_w:
     with open(file_path, 'r', encoding='utf-8') as f_r:
