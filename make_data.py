@@ -14,7 +14,7 @@ def normalize_text(text):
     return text.lower()
 
 # list stopwords
-filename = './Language-Model/stopwords.csv'
+filename = './Language-Model/data/stopwords.csv'
 data = pd.read_csv(filename, sep="\t", encoding='utf-8')
 list_stopwords = data['stopwords'].tolist()
 
@@ -38,7 +38,7 @@ def word_segment(sent):
 # File path to the corpus
 file_path = './Language-Model/wikipediacorpus/viwiki-20240201-pages-articles-multistream-index.txt'
 
-with open('./Language-Model/datatrain.txt', 'w', encoding='utf-8') as f_w:
+with open('./Language-Model/data/datatrain.txt', 'w', encoding='utf-8') as f_w:
     with open(file_path, 'r', encoding='utf-8') as f_r:
         contents = f_r.read().strip().split('</doc>')
         for content in contents:

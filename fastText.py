@@ -6,7 +6,7 @@ from pyvi import ViTokenizer
 from gensim.models.fasttext import FastText
 
 # path data
-pathdata = './Language-Model/datatrain.txt'
+pathdata = './Language-Model/data/datatrain.txt'
 
 def read_data(path):
     traindata = []
