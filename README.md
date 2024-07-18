@@ -15,11 +15,3 @@ The project aims to build a vector space for Vietnamese. From this, we use the m
     ```bash
     python main.py
     ```
-
-- Or run the following script to use the pre-trained model:
-    ```bash
-    python using_model_demo.py
-    ```
-    ```bash
-    python visualize.py
-    ```
