@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
-
 from gensim.models import KeyedVectors, Word2Vec
 import gensim
+import numpy as np
+from pyvi import ViTokenizer
 
 # Check the version of gensim
 print(f"gensim version: {gensim.__version__}")
@@ -32,14 +32,47 @@ if model:
         model = model.wv  # Extract the KeyedVectors object
         print("Extracted KeyedVectors from the Word2Vec model.")
 
-# Find and print the most similar words to 'quang'
-if model:
-    try:
-        similar_words = model.most_similar("mặt_trời")
-        print("Most similar words to 'mặt_trời':")
-        for word, similarity in similar_words:
-            print(f"{word}: {similarity}")
-    except Exception as e:
-        print(f"Error finding similar words: {e}")
-else:
-    print("Model not loaded. Exiting script.")
+# Open a file to write the output
+output_file = open('./Language-Model/result/output.txt', 'w', encoding='utf-8')
+
+# Function to find synonyms for given words
+def find_synonyms(words):
+    if model:
+        for word in words:
+            try:
+                similar_words = model.most_similar(word)
+                output_file.write(f"Most similar words to '{word}':\n")
+                for sim_word, similarity in similar_words:
+                    output_file.write(f"  {sim_word}: {similarity}\n")
+            except Exception as e:
+                output_file.write(f"Error finding similar words for '{word}': {e}\n")
+    else:
+        output_file.write("Model not loaded. Cannot find synonyms.\n")
+
+# Function to calculate sentence similarity
+def sentence_similarity(sent1, sent2):
+    if model:
+        try:
+            vec1 = np.mean([model[word] for word in ViTokenizer.tokenize(sent1).split() if word in model], axis=0)
+            vec2 = np.mean([model[word] for word in ViTokenizer.tokenize(sent2).split() if word in model], axis=0)
+            similarity = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+            return similarity
+        except Exception as e:
+            output_file.write(f"Error calculating sentence similarity: {e}\n")
+            return None
+    else:
+        output_file.write("Model not loaded. Cannot calculate sentence similarity.\n")
+        return None
+
+# Find and write the most similar words to given words
+words_to_find = ["mặt_trời", "tiền"]
+find_synonyms(words_to_find)
+
+# Calculate and write the similarity between two given sentences
+sentence1 = "Tôi yêu công việc của mình."
+sentence2 = "Tôi thích công việc này."
+similarity = sentence_similarity(sentence1, sentence2)
+output_file.write(f"Similarity between '{sentence1}' and '{sentence2}': {similarity}\n")
+
+# Close the output file
+output_file.close()
